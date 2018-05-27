@@ -1,6 +1,6 @@
 {
   "name": "serverless-plugin-parent",
-  "version": "0.0.6",
+  "version": "0.0.1",
   "description": "Serverless plugin to share common configuration between services",
   "main": "src/index.js",
   "scripts": {

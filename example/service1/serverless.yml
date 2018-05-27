@@ -1,0 +1,17 @@
+service: Service1
+
+plugins:
+  - serverless-plugin-parent
+
+provider:
+  environment:
+    HELLO_MESSAGE: Mholo
+
+functions:
+  Hello:
+    handler: hello.handle
+    events:
+      - http:
+          path: hello
+          method: get
+          cors: true

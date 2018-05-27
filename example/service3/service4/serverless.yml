@@ -1,0 +1,21 @@
+service: Service4
+
+plugins:
+  - serverless-plugin-parent
+
+custom:
+  parent:
+    maxLevels: 2
+
+provider:
+  environment:
+    GOODBYE_MESSAGE: Hamba kakuhle
+
+functions:
+  Goodbye:
+    handler: goodbye.handle
+    events:
+      - http:
+          path: goodbye
+          method: get
+          cors: true

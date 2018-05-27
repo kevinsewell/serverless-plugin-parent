@@ -1,0 +1,21 @@
+service: Service2
+
+plugins:
+  - serverless-plugin-parent
+
+custom:
+ parent:
+  path: ../parent/serverless.yml
+
+provider:
+  environment:
+    GOODBYE_MESSAGE: Hamba kakuhle
+
+functions:
+  Goodbye:
+    handler: goodbye.handle
+    events:
+      - http:
+          path: goodbye
+          method: get
+          cors: true

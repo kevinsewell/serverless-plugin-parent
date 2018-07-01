@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless-plugin-parent": ".."
+    "serverless-plugin-parent": "..",
+    "serverless-plugin-registry": "0.0.3"
   }
 }

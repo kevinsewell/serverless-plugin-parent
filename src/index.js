@@ -125,7 +125,7 @@ class ServerlessPluginParent {
             this.serverless.service.custom &&
             this.serverless.service.custom.parent &&
             this.serverless.service.custom.parent.maxLevels
-        ) || 10;
+        ) || 3;
 
         let relativePath = "..";
 

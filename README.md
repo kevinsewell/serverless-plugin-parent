@@ -5,7 +5,7 @@ Serverless Parent Plugin
 [![npm downloads](https://img.shields.io/npm/dm/serverless-plugin-parent.svg)](https://www.npmjs.com/package/serverless-plugin-parent)
 [![license](https://img.shields.io/npm/l/serverless-plugin-parent.svg)](https://raw.githubusercontent.com/aronim/serverless-plugin-parent/master/LICENSE)
 
-Parent your Configuration and Code
+Share common configuration between services
 
 **Requirements:**
 * Serverless *v1.12.x* or higher.
@@ -13,8 +13,7 @@ Parent your Configuration and Code
 
 ## How it works
 
-Parent allows you to keep your infrastructure configuration and code in the same place. Making it easier to reason 
-and refactor your project.
+This plugin allows you to move common Serverless configuration up into a common file  
 
 ### Setup
 
@@ -32,11 +31,11 @@ plugins:
 
 ### Default Usage - Discover Serverless.yml
 The plugin will recursively search all parent directories for a serverless.yml file until it reaches the user's 
-home direcory or has gone `x` number of directories up. The default value is 10 but this can be configured using
+home direcory or has gone `x` number of directories up. The default value is 3 but this can be configured using
 ```yaml
 custom:
   parent:
-    maxLevels: 2
+    maxLevels: 2     # Optional (Default 3)
 ```  
 
 ##### Project Structure

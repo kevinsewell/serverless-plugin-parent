@@ -13,7 +13,7 @@ Share common configuration between services
 
 ## How it works
 
-This plugin allows you to move common Serverless configuration up into a common file  
+Serverless Plugin that allows you to keep common configuration in a parent serverless.yml  
 
 ### Setup
 

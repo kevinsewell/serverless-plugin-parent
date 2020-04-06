@@ -99,9 +99,29 @@ class ServerlessPluginParent {
         const parentConfigurationFilename = this.getParentConfigurationRelativePath();
 
         const parentConfiguration = this.serverless.utils.readFileSync(parentConfigurationFilename);
+        
+        // save old config for later use
+        const userServiceConfig = _.merge({}, this.serverless.service)
 
         this.serverless.service = _.merge(this.serverless.service || {}, parentConfiguration);
-    }
+
+        let overwriteServiceConfig = true
+        if (
+          this.serverless.service.custom !== undefined &&
+          this.serverless.service.custom.parent !== undefined &&
+          this.serverless.service.custom.parent.overwriteServiceConfig === false
+        ) {
+          overwriteServiceConfig = false
+        } 
+
+        // overwrites service config with parent config
+        this.serverless.service = _.merge(this.serverless.service || {}, parentConfiguration)
+
+        if (!overwriteServiceConfig) {
+          // overwrites config again with old service file
+          this.serverless.service = _.merge(this.serverless.service, userServiceConfig)
+        }
+    } 
 
     /**
      * Search service paths recursively for Serverless configration fragment files

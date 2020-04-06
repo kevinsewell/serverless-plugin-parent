@@ -4,8 +4,44 @@ plugins:
   - serverless-plugin-parent
 
 provider:
+  # Overwrites runtime from parent
+  runtime: nodejs10.x
   environment:
     HELLO_MESSAGE: Mholo
+
+
+custom:
+  parent:
+     overwriteServiceConfig: false
+
+resources:
+  Resources:
+  # Overwrites DefaultRole from parent
+    DefaultRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /
+        RoleName: ${self:service}-${self:provider.stage}_child
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: ${self:service}-${self:provider.stage}_child
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: arn:aws:logs:${self:provider.region}:*:log-group:/aws/lambda/*:*:*
+
 
 functions:
   Hello:

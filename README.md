@@ -38,6 +38,14 @@ custom:
     maxLevels: 2     # Optional (Default 3)
 ```  
 
+Per default the parent file will overwrite settings in the service files. If you want the service file to have a
+higher priority you can change that using
+```yaml
+custom:
+  parent:
+    overwriteServiceConfig: false     # Optional (Default true)
+```  
+
 ##### Project Structure
 
 ```

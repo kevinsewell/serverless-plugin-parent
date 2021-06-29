@@ -62,7 +62,10 @@ class ServerlessPluginParent {
      * @returns {Promise}
      */
     printParentUsage() {
-        this.serverless.cli.generateCommandsHelp(["parent"]);
+
+        if (this.serverless.cli.generateCommandsHelp){
+            this.serverless.cli.generateCommandsHelp(["parent"]);    
+        }
 
         return BbPromise.resolve();
     }
@@ -120,6 +123,15 @@ class ServerlessPluginParent {
         if (!overwriteServiceConfig) {
           // overwrites config again with old service file
           this.serverless.service = _.merge(this.serverless.service, userServiceConfig)
+        }
+
+        //
+        // after serverless@2.26.0. variables are resolved before the plugins are called
+        // thus we need to explicitly repopulate variables after merging the fragments
+        //
+        if (this.serverless.variables && this.serverless.variables.populateService && 
+            typeof this.serverless.variables.populateService === 'function') {
+            this.serverless.variables.populateService(this.serverless.pluginManager.cliOptions);        
         }
     } 
 

@@ -171,7 +171,7 @@ class ServerlessPluginParent {
             configurationPathKeys = []
         }
 
-        if (typeof value == 'object'){
+        if (value && typeof value == 'object'){
             Object.keys(value).forEach(key => {
                   this.extendServiceConfigurationWithObject(this.appendConfigurationPathKey(configurationPathKeys, key), value[key]);
                 });

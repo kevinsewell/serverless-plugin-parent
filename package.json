@@ -1,6 +1,6 @@
 {
   "name": "serverless-plugin-parent",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Serverless plugin to share common configuration between services",
   "main": "src/index.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.10"
   },
-  "peerDependencies":{
+  "peerDependencies": {
     "serverless": "^3.26.0"
   }
 }

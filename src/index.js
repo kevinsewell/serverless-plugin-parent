@@ -62,7 +62,10 @@ class ServerlessPluginParent {
      * @returns {Promise}
      */
     printParentUsage() {
-        this.serverless.cli.generateCommandsHelp(["parent"]);
+
+        if (this.serverless.cli.generateCommandsHelp){
+            this.serverless.cli.generateCommandsHelp(["parent"]);    
+        }
 
         return BbPromise.resolve();
     }
@@ -100,27 +103,7 @@ class ServerlessPluginParent {
 
         const parentConfiguration = this.serverless.utils.readFileSync(parentConfigurationFilename);
         
-        // save old config for later use
-        const userServiceConfig = _.merge({}, this.serverless.service)
-
-        this.serverless.service = _.merge(this.serverless.service || {}, parentConfiguration);
-
-        let overwriteServiceConfig = true
-        if (
-          this.serverless.service.custom !== undefined &&
-          this.serverless.service.custom.parent !== undefined &&
-          this.serverless.service.custom.parent.overwriteServiceConfig === false
-        ) {
-          overwriteServiceConfig = false
-        } 
-
-        // overwrites service config with parent config
-        this.serverless.service = _.merge(this.serverless.service || {}, parentConfiguration)
-
-        if (!overwriteServiceConfig) {
-          // overwrites config again with old service file
-          this.serverless.service = _.merge(this.serverless.service, userServiceConfig)
-        }
+        this.extendServiceConfigurationWithObject([],parentConfiguration);
     } 
 
     /**
@@ -163,6 +146,44 @@ class ServerlessPluginParent {
 
         return path.join(relativePath, "serverless.yml");
     };
+
+    /**
+     * Append a key to the list of configurationPathKeys
+     *
+     * @param configurationPathKeys
+     * @param key
+     */
+    appendConfigurationPathKey(configurationPathKeys, key){
+        let keys_ = _.cloneDeep(configurationPathKeys)
+        keys_.push(key)
+        return keys_;
+    }
+
+    /**
+     * Extend the serverless Configuration with and object
+     *
+     * @param configurationPathKeys array of path keys e.g. [['provider'],['name']]
+     * @param value e.g. aws
+     */
+    extendServiceConfigurationWithObject(configurationPathKeys, value){
+
+        if (!configurationPathKeys){
+            configurationPathKeys = []
+        }
+
+        if (value && typeof value == 'object'){
+            Object.keys(value).forEach(key => {
+                  this.extendServiceConfigurationWithObject(this.appendConfigurationPathKey(configurationPathKeys, key), value[key]);
+                });
+        }
+        else if (Array.isArray(value)){
+            value.forEach((element) => this.extendServiceConfigurationWithObject(configurationPathKeys, element));
+        }
+        else if (value){
+            this.serverless.extendConfiguration(configurationPathKeys, value);
+        }
+    }
+
 }
 
 /** Export ServerlessPluginParent class */
